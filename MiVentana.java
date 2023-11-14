@@ -78,37 +78,34 @@ public class MiVentana extends JFrame {
 
     }
 
+    // Método para analizar el texto ingresado
     public int[] analizador_lexicografico(String texto) {
         // Define el patrón para identificar emojis
         String patronEmojis = "(:\\)|:\\(|:D|;-\\)|:P|xD|:-\\)|:-\\(|\\(y\\)|\\(n\\)|<3|\\\\m/|:-O|:O|:-\\||:\\||:\\*|>:\\(|\\^\\^|:-\\])";
         Pattern patternEmojis = Pattern.compile(patronEmojis);
         Matcher matcherEmojis = patternEmojis.matcher(texto);
-
         int[] resultados = new int[2];
 
         // Utiliza un patrón para identificar palabras en español
         Pattern patternPalabras = Pattern.compile("\\b[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]+\\b");
         Matcher matcherPalabras = patternPalabras.matcher(texto);
-
-        String textoConEmojisReemplazados = texto; // Copia del texto original
+        String textoConEmojisReemplazados = texto;
 
         while (matcherEmojis.find()) {
             resultados[0]++;
             String emojiEncontrado = matcherEmojis.group();
             String rutaImagen = emojisMap.get(emojiEncontrado);
 
-            // Reemplazar el emoji con la imagen en alta definición en la copia del texto
             textoConEmojisReemplazados = textoConEmojisReemplazados.replace(emojiEncontrado, "<img src='" + rutaImagen + "' alt='" + emojiEncontrado + "' width='40' height='40'>");
             respuesta2.setText(textoConEmojisReemplazados);
         }
-
         while (matcherPalabras.find()) {
             resultados[1]++;
         }
-
         return resultados;
     }
 
+    // Método para cargar el diccionario de palabras en español
     private Set<String> cargarDiccionarioEspanol(String archivo) {
         Set<String> diccionario = new HashSet<>();
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
@@ -122,6 +119,7 @@ public class MiVentana extends JFrame {
         return diccionario;
     }
 
+    // Método para cargar la imagen
     private static JLabel getImage(String ruta) {
         ImageIcon imagenIcon = new ImageIcon(ruta);
         Image imagenOriginal = imagenIcon.getImage();
@@ -133,7 +131,9 @@ public class MiVentana extends JFrame {
         return etiquetaImagen;
     }
 
+    // Método main
     public static void main(String[] args) {
+        // Implementación de la ventana
         MiVentana ventana = new MiVentana();
         ventana.setVisible(true);
     }
